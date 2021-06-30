@@ -9,9 +9,9 @@ This source code consists of an R project for R Studio and the following R scrip
 
 1. libraries.R
 2. utils.R
-3. generateR1.R
+3. generateR3.R
 4. run.R
-5. random1.R
+5. random3.R
 
 ## Preparing your experiment
 
