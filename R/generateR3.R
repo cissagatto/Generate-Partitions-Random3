@@ -1,37 +1,33 @@
-##################################################################################################
-# Random Partitions Version 3                                                                    #
-# Copyright (C) 2021                                                                             #
-#                                                                                                #
-# This program is free software: you can redistribute it and/or modify it under the terms of the #
-# GNU General Public License as published by the Free Software Foundation, either version 3 of   #  
-# the License, or (at your option) any later version. This program is distributed in the hope    #
-# that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of         #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for    #
-# more details.                                                                                  #     
-#                                                                                                #
-# Elaine Cecilia Gatto | Prof. Dr. Ricardo Cerri | Prof. Dr. Mauri Ferrandin                     #
-# Federal University of Sao Carlos (UFSCar: https://www2.ufscar.br/) Campus Sao Carlos           #
-# Computer Department (DC: https://site.dc.ufscar.br/)                                           #
-# Program of Post Graduation in Computer Science (PPG-CC: http://ppgcc.dc.ufscar.br/)            #
-# Bioinformatics and Machine Learning Group (BIOMAL: http://www.biomal.ufscar.br/)               #
-#                                                                                                #
-##################################################################################################
+##############################################################################
+# Generate Random Partitions version 3                                       #
+# Copyright (C) 2021                                                         #
+#                                                                            #
+# This code is free software: you can redistribute it and/or modify it under #
+# the terms of the GNU General Public License as published by the Free       #
+# Software Foundation, either version 3 of the License, or (at your option)  #
+# any later version. This code is distributed in the hope that it will be    #
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of     #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General   #
+# Public License for more details.                                           #
+#                                                                            #
+# Elaine Cecilia Gatto | Prof. Dr. Ricardo Cerri | Prof. Dr. Mauri           #
+# Ferrandin | Federal University of Sao Carlos                               #
+# (UFSCar: https://www2.ufscar.br/) Campus Sao Carlos | Computer Department  #
+# (DC: https://site.dc.ufscar.br/) | Program of Post Graduation in Computer  #
+# Science (PPG-CC: http://ppgcc.dc.ufscar.br/) | Bioinformatics and Machine  #
+# Learning Group (BIOMAL: http://www.biomal.ufscar.br/)                      #
+#                                                                            #
+##############################################################################
 
-##################################################################################################
-# Script 3 - Miscelaneous                                                                       #
-##################################################################################################
 
-##################################################################################################
-# Configures the workspace according to the operating system                                     #
-##################################################################################################
-sistema = c(Sys.info())
-FolderRoot = ""
-if (sistema[1] == "Linux"){
-  FolderRoot = paste("/home/", sistema[7], "/Generate-Partitions-Random3", sep="")
-} else {
-  FolderRoot = paste("C:/Users/", sistema[7], "/Generate-Partitions-Random3", sep="")
-}
-FolderScripts = paste(FolderRoot, "/scripts", sep="")
+###########################################################################
+#
+###########################################################################
+FolderRoot = "~/Generate-Partitions-Random3"
+FolderScripts = "~/Generate-Partitions-Random3/R"
+
+
+
 
 
 ##################################################################################################
@@ -46,7 +42,14 @@ FolderScripts = paste(FolderRoot, "/scripts", sep="")
 #   Return                                                                                       #
 #       configuration partitions                                                                 #
 ##################################################################################################
-generateR3 <- function(namesLabels, number_folds, dataset_name, ds, folderResults){
+generateR3 <- function(ds,
+                       dataset_name,
+                       number_dataset, 
+                       number_cores, 
+                       number_folds, 
+                       folderResults,
+                       namesLabels,
+                       resLS){
   
   diretorios <- directories(dataset_name, folderResults)
   
@@ -133,7 +136,9 @@ generateR3 <- function(namesLabels, number_folds, dataset_name, ds, folderResult
     frequencia1 = count(pFinal2, pFinal2$group)
     names(frequencia1) = c("group", "totalLabels")
     setwd(FolderSplit)
-    write.csv(frequencia1, paste("fold-", f, "-labels-per-group-partition.csv", sep=""), row.names = FALSE)
+    write.csv(frequencia1, paste("fold-", f, 
+                                 "-labels-per-group-partition.csv", sep=""), 
+              row.names = FALSE)
     
     #cat("\nUpdate data frame")
     num.fold = f
@@ -142,11 +147,15 @@ generateR3 <- function(namesLabels, number_folds, dataset_name, ds, folderResult
     names.labels = pFinal$names.labels
     num.index = pFinal$index
     AllPartitions = rbind(AllPartitions, 
-                          data.frame(num.fold, num.part, num.group, names.labels, num.index))
+                          data.frame(num.fold, num.part, 
+                                     num.group, names.labels, 
+                                     num.index))
     
     #cat("\nSave all partition in results dataset")
     setwd(FolderSplit)
-    write.csv(AllPartitions[-1,], paste("fold-", f, "-all-partitions-v2.csv", sep=""), row.names = FALSE)
+    write.csv(AllPartitions[-1,], paste("fold-", f,
+                                        "-all-partitions-v2.csv", sep=""),
+              row.names = FALSE)
     
     #cat("\nTodas partições")
     pFinal = pFinal[order(pFinal$names.labels, decreasing = FALSE),]
@@ -158,16 +167,22 @@ generateR3 <- function(namesLabels, number_folds, dataset_name, ds, folderResult
     fold = f
     partition = 1
     num.groups =  num.grupos
-    resumePartitions = rbind(resumePartitions, data.frame(fold, partition, num.groups))
+    resumePartitions = rbind(resumePartitions, data.frame(fold, 
+                                                          partition, 
+                                                          num.groups))
     
     allPartitions2 = allPartitions2[,-2]
     allPartitions2$label = nomesDosRotulos
     setwd(FolderSplit)
-    write.csv(allPartitions2, paste("fold-", f, "-all-partitions.csv", sep=""), row.names = FALSE)
+    write.csv(allPartitions2, paste("fold-", f, 
+                                    "-all-partitions.csv", sep=""), 
+              row.names = FALSE)
     
     resumePartitions = resumePartitions[-1,]
     setwd(FolderSplit)
-    write.csv(resumePartitions, paste("fold-", f, "-groups-per-partition.csv", sep=""), row.names = FALSE)
+    write.csv(resumePartitions, paste("fold-", f, 
+                                      "-groups-per-partition.csv", sep=""),
+              row.names = FALSE)
     
     f = f + 1
     gc()
