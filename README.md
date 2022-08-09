@@ -15,8 +15,8 @@ This code source is composed of the project R to be used in RStudio IDE and also
 2. utils.R
 3. generateR1.R
 4. run.R
-5. random1.R
-6. gpr1_config_files.R
+5. random3.R
+6. gpr3_config_files.R
 
 
 ## Preparing your experiment
@@ -140,7 +140,7 @@ Rscript random3.R "~/Generate-Partitions-Random3/R3-Config-Files/R3-GpositiveGO.
 The results are stored in a folder called reports in the project root.
 
 ## DOWNLOAD RESULTS
-[Click here](https://www.4shared.com/folder/vlpgBMO0/Random2.html)
+[Click here](https://www.4shared.com/folder/thGcQUx4/Random3.html)
 
 ## Acknowledgment
 This study is financed in part by the Coordenação de Aperfeiçoamento de Pessoal de Nível Superior - Brasil (CAPES) - Finance Code 001
